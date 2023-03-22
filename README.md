@@ -1,10 +1,10 @@
-# ITNT: In-place Transposition of N-order Tensor on Graphics Processing Units
+# EITHOT: Efficient In-place Transposition of High Order Tensors on GPUs
 
-Tensor transposition is a fundamental operation in many applications, but naive implementations require double the memory and aren't suitable for large-scale tensors on memory-limited GPUs. To address this, ITNT is presented as an efficient algorithm for in-place tensor transposition on GPUs, requiring at most 5% additional memory for large tensors.
+Tensor transposition is a fundamental operation in many applications, but naive implementations require double the memory and aren't suitable for large-scale tensors on memory-limited GPUs. To address this, EITHOT is presented as an efficient algorithm for in-place tensor transposition on GPUs, requiring at most 5% additional memory for large tensors.
 
 ## Algorithm
 ---
-ITNT is based on the following steps:
+EITHOT is based on the following steps:
 
 1. Factorize high-order tensors into a sequence of low-order transpositions using permutation decomposition.
 2. Divide large tensors into smaller ones based on the estimation of required extra memory and transpose each separately.
@@ -12,7 +12,7 @@ ITNT is based on the following steps:
 
 ## Environment
 ---
-The following environment was used to develop and test ITNT:
+The following environment was used to develop and test EITHOT:
 
 - Operating System: Ubuntu 22.04
 - GPU: NVIDIA RTX 3090
@@ -22,10 +22,10 @@ If you plan on using a GPU that's different from the above one, it's crucial to 
 
 ## Getting start
 ---
-To build and install ITNT, follow these steps:
+To build and install EITHOT, follow these steps:
 1. Clone the repository:
 ```
-$ git clone https://github.com/kano89125/ITNT.git
+$ git clone https://github.com/kano89125/EITHOT.git
 ```
 2. Navigate to the **Nd_memory_estimation** directory and Build the project using the Makefile:
 ```
@@ -42,7 +42,7 @@ $ cd ..
 ## Usage
 ---
 ### Input Format
-The input to ITNT consists of the following parameters, separated by spaces:
+The input to EITHOT consists of the following parameters, separated by spaces:
 1. Dimensions: A sequence of integers indicating the size of each dimension of the tensor, in order. For example, "2 41961 8192 2" specifies a 4-dimensional tensor with dimensions (2, 41961, 8192, 2).
 
 2. Permutation: A sequence of integers indicating the desired permutation of dimensions for the transposition, using the 1-based index of each dimension. For example, "1 3 2 4" specifies that the tensor should be transposed by swapping the second and third dimensions.
@@ -64,7 +64,7 @@ In the script, you need to specify the input format, including the dimensions si
 
 After you run the script, the program will estimate the optimal number of sub-tensors for the tensor transposition. 
 
-Next, navigate to the ITNT folder and run the **test_INT.sh** script again with the following command:
+Next, navigate to the **ITNT** folder and run the **test_INT.sh** script again with the following command:
 ```
 $ ./test_INT.sh
 ```
