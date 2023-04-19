@@ -14,7 +14,7 @@
 #include "Nd_decompose.h"
 #include "memory_estimation.h"
 
-#define fix_nb 1
+#define fix_nb 0
 
 // tensor vol * sizeof(T) = input size, vol may be sub-tensor vol
 

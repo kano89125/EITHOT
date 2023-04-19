@@ -27,9 +27,9 @@ CUDAROOT = $(subst /bin/,,$(dir $(shell which $(NVCC))))
 CPPFLAGS = -I$(INC_DIR) -I$(SRC_DIR) -I$(CUDAROOT)/include -L$(CUDAROOT)/lib64 -std=c++14 -O3 -DDEBUG
 NVCCFLAGS = -gencode=arch=compute_86,code=sm_86 -rdc=true
 
-all: lib/libinplacett.a test_inplace
+all: lib/libinplacett.a Nd_estimation
 
-test_inplace: lib/libinplacett.a $(OBJTEST)
+Nd_estimation: lib/libinplacett.a $(OBJTEST)
 	@mkdir -p $(OBJ_DIR)
 	$(NVCC) $(NVCCFLAGS) -L$(LIB_DIR) -linplacett -o $@ $^
 

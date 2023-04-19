@@ -16,7 +16,7 @@
 #include "Nd_decompose.h"
 #include "memory_estimation.h"
 
-#define fix_nb 1
+#define fix_nb 0
 #define _132_col_liearization_low_bound 48
 #define _132_catanzaro_low_bound 12
 #define _213_row_liearization_low_bound 8

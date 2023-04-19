@@ -69,3 +69,21 @@ Next, navigate to the **ITNT** folder and run the **test_INT.sh** script again w
 $ ./test_INT.sh
 ```
 This time, the script will perform the tensor transposition and output the elapsed time.
+
+### Benchmark
+To use the **Bench.sh** script, first make sure to copy the **test_inplace** and **Nd_estimation** from another two folders into the Benchmark folder. Once you've done that, navigate to the Benchmark folder and run the script using the following command:
+```
+$ ./Bench.sh task_id
+```
+Here, "task_id" should be a number from 1 to 6, corresponding to the six different experiments in our work.
+
+
+For Experiment 6, you will need to modify a variable in the **ITNT/src/Nd_transpose.cpp** file. Open the Nd_transpose.cpp file, and locate the variable **REORDER_TYPE**. This variable determines how the program will perform the reordering step.
+
+You can change the value of the variable as follows:
+
+- 0: mix order
+- 1: pre-order
+- 2: post-order
+
+Then **make** again and copy **test_inplace** to Benchmark folder. 

@@ -13,7 +13,7 @@
 #include "util.h"
 
 #define WARP_SIZE 32
-#define UPPER_BOUND_VOLUME 5500000000
+#define UPPER_BOUND_VOLUME 22000000000
 
 template<typename T>
 void transpose(TensorUtil<T>& tu, int NUM_TENSOR_BLOCK, double ALPHA, int TYPE_SIZE)  {	
@@ -41,7 +41,7 @@ void transpose(TensorUtil<T>& tu, int NUM_TENSOR_BLOCK, double ALPHA, int TYPE_S
 	int percent = (double)transpose_tmp / (double)dataSize / ALPHA;
 	int nb = pow(2, (int)ceil(log2(percent)));
 	if(nb == 0){ ++nb;}
-	//printf("init Extra Memory size = %.5f MB, take %.5f percent input data size, nb = %d\n", (double)transpose_tmp / 1e6, perc, nb);
+	printf("init Extra Memory size = %.5f MB\n", (double)transpose_tmp / 1e6);
 	
 	if(transpose_tmp > 0) {
 		ALPHA = std::max(ALPHA, 1 / sqrt((double)vol / (double)WARP_SIZE));// assure correct for split dim for c2r
@@ -116,14 +116,18 @@ void transpose(TensorUtil<T>& tu, int NUM_TENSOR_BLOCK, double ALPHA, int TYPE_S
 	//printf(" %dD Inplace %d transpose,", tu.rank, perm_int);
 	//printf(" Dims =");
 	printf("Final Extra Memory Size = %.5f MB, take %.5f percent input data size\n", (double)final_tmp / 1e6, memRatio);
-	printf("\t\"");
-	for(size_t i = 0; i < tu.rank; ++i) { printf(" %zu", tu.dim_long[i]);}
-	for(size_t i = 0; i < tu.rank; ++i) { printf(" %zu", tu.permutation_long[i] + 1);}	
+	printf("\t");
+	for(size_t i = 0; i < tu.rank; ++i) { printf("%zu ", tu.dim_long[i]);}
+	for(size_t i = 0; i < tu.rank; ++i) { printf("%zu ", tu.permutation_long[i] + 1);}	
 		
 	//printf("NUM sub-tensor should be %d\n", nb);
 	//printf(" %d\n, nb");
-	printf(" %d %d %.2f\"\\\n", TYPE_SIZE, nb, ALPHA);
-	
+	printf("%d %d %.2f\n", TYPE_SIZE, nb, ALPHA);
+	FILE *txtfp = fopen("proper_input.txt", "a+");
+	for(size_t i = 0; i < tu.rank; ++i) { fprintf(txtfp, "%zu ", tu.dim_long[i]);}
+	for(size_t i = 0; i < tu.rank; ++i) { fprintf(txtfp,"%zu ", tu.permutation_long[i] + 1);}	
+	fprintf(txtfp, "%d %d %.2f\n", TYPE_SIZE, nb, ALPHA);
+	fclose(txtfp);
     	//FILE* txtfp = fopen("inplace_space.txt", "a+");
     	//fprintf(txtfp, "%.5f\n", (double)tmp / 1e6);
    	//fclose(txtfp);

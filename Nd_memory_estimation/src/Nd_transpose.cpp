@@ -17,10 +17,16 @@
 /* 
 	permutation ranks 1 to n here
 */
-
+/*
+REORDER_TYPE:
+	0: Mix
+	1: Pre_order
+	2: Post_order
+*/
+#define REORDER_TYPE 0
 #define WARP_SIZE 32
-#define PRE_ORDER_INDEX_REORDERING 0
-#define POST_ORDER_INDEX_REORDERING 1
+#define PRE_ORDER_INDEX_REORDERING 1
+#define POST_ORDER_INDEX_REORDERING 2
 
 // use in method selection linearized condition
 #define _132_col_liearization_low_bound 48
@@ -162,8 +168,18 @@ namespace _Nd {
 		bool PRINT_flag = false;
 		//if(source > 0) {PRINT_flag = false;}
 		//else { PRINT_flag = true;}
-		int reordering_method_type = method_selection(tensor_dim, cur_tensor_indices, transpose_permutation, rank);
-
+		int reordering_method_type;
+		switch(REORDER_TYPE){
+			case 0:
+				reordering_method_type = method_selection(tensor_dim, cur_tensor_indices, transpose_permutation, rank);
+				break;
+			case 1:
+				reordering_method_type = PRE_ORDER_INDEX_REORDERING;
+				break;
+			case 2:
+				reordering_method_type = POST_ORDER_INDEX_REORDERING;
+				break;
+		}
 		//reordering_method_type = PRE_ORDER_INDEX_REORDERING;
 		//reordering_method_type = POST_ORDER_INDEX_REORDERING;	
 		if(reordering_method_type == PRE_ORDER_INDEX_REORDERING) { if(PRINT_flag == true){ printf("execute pre order sorting");}}

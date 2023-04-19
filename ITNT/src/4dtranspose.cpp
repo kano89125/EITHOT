@@ -17,7 +17,7 @@
 #include "memory_estimation.h"
 
 
-#define fix_nb 1
+#define fix_nb 0
 #define _1324_col_liearization_low_bound 96 // 96
 #define _1324_row_liearization_low_bound 4
 

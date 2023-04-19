@@ -139,35 +139,25 @@ namespace inplace {
 			merged_dim[merged_rank - 1] = 1;
 			for(int i = init_unmatched_index + 1; i < rank; ++i) { merged_dim[merged_rank - 1] *= origin_dim[i];}
 			std::copy(origin_dim, origin_dim + init_unmatched_index + 1, merged_dim);
-		} else { std::copy(origin_dim, origin_dim + rank, merged_dim);}
+		} else {std::copy(origin_dim, origin_dim + rank, merged_dim);}
 	}
 
 	// target_transpose index > transpose_index
 	void pre_round_trans_perm_generation(int *transpose_permutation, std::vector<int> cur_tensor_indices, int *round_trans_perm, int rank, int init_unmatched_index)
 	{
-		// seek the unmatch perm and its correspond in cur_tensor_indices, whether have a common sequence
-		// we must know this has length 1, because contain itself
-		// and we can get a permutation to swap this sequence to right place
-		// ex: cur_tensor_indices: 568_291_374, transpose_permutation: 568_372_491
-		// the we find diff at index=3, and get seq(37)
-		// so we can create round_trans_perm = 000_780_000
-		// and fill increasing number, the  round_trans_perm = 123_784_569
-		// in this form, cur will become 568_372_914
-
 		// transpose index in target permutation
 		// target transpose index in current tensor indices
-		int match_count = 0, seq_count = 0; // include itself
-		int transpose_index = init_unmatched_index, target_transpose_perm = transpose_permutation[transpose_index];
-		// find the target index in cur_tensor_indices
-		std::vector<int>::iterator itr = std::find(cur_tensor_indices.begin(), cur_tensor_indices.end(), target_transpose_perm);
+		int match_count = 1, seq_count = 0, non_seq_count = 1; // include itself
+		int transpose_index = init_unmatched_index, target_transpose_dim = transpose_permutation[transpose_index];
+		std::vector<int>::iterator itr = std::find(cur_tensor_indices.begin(), cur_tensor_indices.end(), target_transpose_dim);
 		int target_transpose_index = std::distance(cur_tensor_indices.begin(), itr);
-
+ 
 		while(transpose_index + match_count < rank && target_transpose_index + match_count < rank) { 
 			if(transpose_permutation[transpose_index + match_count] == cur_tensor_indices[target_transpose_index + match_count]){ ++match_count;}
 			else { break;}
 		}
-
 		int seq_part_size = match_count;
+		//printf("i_m, i_r, seq_part size = %d, %d, %d\n", transpose_index, target_transpose_index, seq_part_size);
 		for(int i = 0; i < rank; ++i) { round_trans_perm[i] = 0;}
 		int last_seq_index = transpose_index + seq_part_size;
 		for(int index = transpose_index; index < last_seq_index; ++index) {
@@ -175,12 +165,17 @@ namespace inplace {
 			++seq_count;
 		}
 
-		int count = 1, index = 0;
-		while(index < rank){
-			while(round_trans_perm[index] != 0) {index++;}
-			if(count < round_trans_perm[transpose_index] || count > round_trans_perm[last_seq_index - 1])
-				round_trans_perm[index++] = count;
-			count++;
+		for(int count = 1; count <= rank; ++count) {
+			int *tmp_val = std::find(round_trans_perm + transpose_index, round_trans_perm + last_seq_index, count);
+			if(tmp_val != round_trans_perm + last_seq_index) { continue;}
+			//if(seq_part_size == 1 && count == target_transpose_index + 1){ continue;}
+			for(int perm_index = 0; perm_index < rank; ++perm_index) {
+				if(round_trans_perm[perm_index] != 0) {  continue;}
+				else {
+					round_trans_perm[perm_index] = count;
+					break;
+				}
+			}
 		}
 	}
 
@@ -188,7 +183,7 @@ namespace inplace {
 	void post_round_trans_perm_generation(int *transpose_permutation, std::vector<int> cur_tensor_indices, int *round_trans_perm, int rank, int init_unmatched_index) {
 		// transpose index in target permutation
 		// target transpose index in current tensor indices
-		int match_count = 0, seq_count = 0, non_seq_count = 1; // include itself
+		int match_count = 1, seq_count = 0, non_seq_count = 1; // include itself
 		int transpose_index = init_unmatched_index, target_transpose_dim = transpose_permutation[transpose_index];
 		std::vector<int>::iterator itr = std::find(cur_tensor_indices.begin(), cur_tensor_indices.end(), target_transpose_dim);
 		int target_transpose_index = std::distance(cur_tensor_indices.begin(), itr);
@@ -197,21 +192,40 @@ namespace inplace {
 			if(transpose_permutation[transpose_index - match_count] == cur_tensor_indices[target_transpose_index - match_count]){ ++match_count;} 
 			else { break;}
 		}
-		
-		int seq_part_size = match_count;
+		//printf("i_m, isi, i_r, seq_part size = %d, %d, %d, %d\n", transpose_index, transpose_index - seq_part_size + 1, target_transpose_index, seq_part_size);
+		int sec_seq_part_size = 1, seq_part_size = match_count, count = 0;
+		if(transpose_index - seq_part_size >= 0 && target_transpose_index - seq_part_size - count >= 0) {
+			while(transpose_permutation[transpose_index - seq_part_size - count] == cur_tensor_indices[target_transpose_index - seq_part_size - count]) {
+				++sec_seq_part_size;
+				++count;
+				if(transpose_index - seq_part_size - count < 0 || target_transpose_index - seq_part_size - count < 0) {
+					break;
+				}
+			}
+			//printf("sec_part_size = %d\n", sec_seq_part_size);
+		}
+
 		for(int i = 0; i < rank; ++i) { round_trans_perm[i] = 0;}
+
 		int init_seq_index = transpose_index - seq_part_size + 1;
 		for(int index = init_seq_index; index <= transpose_index; ++index) {
-			round_trans_perm[index] = target_transpose_index + seq_count - seq_part_size + 2;
+			//printf("match index, val = %d %d\n", index, target_transpose_index + seq_count - seq_part_size + 2);
+			round_trans_perm[index] = target_transpose_index + seq_count - seq_part_size + 2; // not sure
 			++seq_count;
 		}
 
-		int count = 1, index = 0;
-		while(index < rank){
-			while(round_trans_perm[index] != 0) {index++;}
-			if(count < round_trans_perm[init_seq_index] || count > round_trans_perm[transpose_index])
-				round_trans_perm[index++] = count;
-			count++;
+		for(int perm_count = rank; perm_count >= 1; --perm_count) {
+			int *tmp_val = std::find(round_trans_perm + init_seq_index, round_trans_perm + transpose_index, perm_count);
+			if(tmp_val != round_trans_perm + transpose_index) { continue;}
+			if(perm_count == target_transpose_index + 1){ continue;}
+			for(int perm_index = rank - 1; perm_index >= 0; --perm_index) {
+				//printf("perm index, count = %d %d\n", perm_index, perm_count);
+				if(round_trans_perm[perm_index] != 0) {  continue;}
+				else {
+					round_trans_perm[perm_index] = perm_count;
+					break;
+				}
+			}
 		}
 	}
 

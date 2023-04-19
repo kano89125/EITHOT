@@ -9,7 +9,7 @@
 #define MEMORY_TYPE 1
 #define verify_flag 2
 #define init_padding_ratio 0.03
-#define UPPER_BOUND_VOLUME 5500000000
+#define UPPER_BOUND_VOLUME 22000000000
 
 template <typename T>
 void memcpy_transpose(TensorUtil<T> &tu, int NUM_SUB_TENSORS, double ALPHA) {
