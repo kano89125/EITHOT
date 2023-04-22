@@ -1,9 +1,8 @@
 #!/bin/bash
 
 # $dim $perm $size_of_data_type $num_sub_tensor $alpha 
-PARAMS=(
-        
-)
+
+
 filename='test_cases/'
 case $1 in
     1) filename+='exp1/'
@@ -23,28 +22,44 @@ filename+='*.txt'
 # throughput='inplace_bench_throughput'
 # total_time='inplace_bench'
 # transpose_time='inplace_bench_wo_h2d2h'
-for f in $filename
-do
-    echo $f
-    n=1
-    while read line; do 
-    echo "Case $n"
-    ./test_inplace $line
-    # ./Nd_estimation $line
-    n=$((n+1))
-    echo ""
-    done < $f
+if $1 != 1
+then
+    for f in $filename
+    do
+        rm "proper_input.txt"
+        echo $f
+        n=1
+        while read line; do 
+        echo "Case $n"
 
-    # n=1
-    # while read line; do 
-    # echo "Case $n"
-    
-    # n=$((n+1))
-    # echo ""
-    # done < "proper_input.txt"
-done 
+        ./Nd_estimation $line
+        n=$((n+1))
+        echo ""
+        done < $f
 
+        n=1
+        while read line; do 
+        echo "Case $n"
+        ./test_inplace $line
+        n=$((n+1))
+        echo ""
+        done < "proper_input.txt"
+    done 
+else
+    for f in $filename
+    do
+        rm "proper_input.txt"
+        echo $f
+        n=1
+        while read line; do 
+        echo "Case $n"
 
+        ./test_inplace $line
+        n=$((n+1))
+        echo ""
+        done < $f
+    done 
+fi
 # for f in $filename
 # do
 #     echo $f

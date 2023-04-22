@@ -294,7 +294,9 @@ namespace _Nd {
 		if(padding_dim_pos != -1) {
 			vol = origin_vol;
 			tensor_dim[padding_dim_pos] = origin_dim_size;
+			for(int i = 0; i < rank; i++){transpose_permutation[i] -= 1;}
 			inplace::Nd_padding_post_process(data, tensor_dim, transpose_permutation, rank, padding_dim_pos, num_block);
+			for(int i = 0; i < rank; i++){transpose_permutation[i] += 1;}
 		}
 		delete [] tensor_dim;
 		delete [] transpose_permutation;

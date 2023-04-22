@@ -14,13 +14,14 @@
 namespace inplace {
 
 template <typename T>
-void Linearization_NDPartition(T *data, int decompose_stride, int non_decompose_stride, int rank, int num_block, double LARGE_RATIO) {
+void Linearization_NDPartition(T *data, int decompose_stride, int non_decompose_stride, int rank, int num_block, double ALPHA) {
 	int linear_permutation[3] = {0, 2, 1};
 	int linear_dim[3] = {decompose_stride / num_block, num_block, non_decompose_stride};
 	assert(linear_dim[0] != 0);
+	int tensor_vol = decompose_stride * non_decompose_stride;
 	//printf("Linearization_NDPartition d1, d2, d3 = %d %d %d %f\n", linear_dim[0], linear_dim[1], linear_dim[2], LARGE_RATIO);
-	//_3d::_132::transpose(reinterpret_cast<float*>(data), 0, linear_dim[0], linear_dim[1], linear_dim[2]);
-	inplace::transpose(data, 0, 3, linear_dim, linear_permutation, sizeof(T), 1, LARGE_RATIO);
+	_3d::_132::transpose(reinterpret_cast<float*>(data), 0, linear_dim[0], linear_dim[1], linear_dim[2], tensor_vol, ALPHA);
+	// inplace::transpose(data, 0, 3, linear_dim, linear_permutation, sizeof(T), 1, LARGE_RATIO);
 }
 
 template void Linearization_NDPartition(int*, int , int, int, int, double);
@@ -29,13 +30,14 @@ template void Linearization_NDPartition(float*, int , int, int, int, double);
 template void Linearization_NDPartition(double*, int , int, int, int, double);
 
 template <typename T>
-void Linearization_NDJoin(T *data, int decompose_stride, int non_decompose_stride, int rank, int num_block, double LARGE_RATIO) {
+void Linearization_NDJoin(T *data, int decompose_stride, int non_decompose_stride, int rank, int num_block, double ALPHA) {
 	int linear_permutation[3] = {0, 2, 1};
 	int linear_dim[3] = {decompose_stride / num_block, non_decompose_stride, num_block};
 	assert(linear_dim[0] != 0);
+	int tensor_vol = decompose_stride * non_decompose_stride;
 	//printf("Linearization_NDJoin d1, d2, d3 = %d %d %d %f\n", linear_dim[0], linear_dim[1], linear_dim[2], LARGE_RATIO);
-	//_3d::_132::transpose(reinterpret_cast<float*>(data), 0, linear_dim[0], linear_dim[1], linear_dim[2]); 
-	inplace::transpose(data, 0, 3, linear_dim, linear_permutation, sizeof(T), 1, LARGE_RATIO);
+	_3d::_132::transpose(reinterpret_cast<float*>(data), 0, linear_dim[0], linear_dim[1], linear_dim[2], tensor_vol, ALPHA); 
+	// inplace::transpose(data, 0, 3, linear_dim, linear_permutation, sizeof(T), 1, LARGE_RATIO);
 }
 
 template void Linearization_NDJoin(int*, int , int, int, int, double);
@@ -65,6 +67,7 @@ void NdJoin(T *data, int *dim, int *permutation, int rank, int num_block, int or
 	//int decompose_permutation_dim = -1;
 	int *perm_dim = new int[rank];
 	int decompose_permutation_dim = -1;
+	for(int i = 0; i < rank; i++){permutation[i] -= 1;}
 	for(int i = 0; i < rank; ++i) { 
 		perm_dim[i] = dim[permutation[i]];
 		if(permutation[i] == ori_decompose_dim){ decompose_permutation_dim = i;} 
@@ -75,6 +78,7 @@ void NdJoin(T *data, int *dim, int *permutation, int rank, int num_block, int or
 	for(int i = decompose_permutation_dim + 1; i < rank; ++i) { non_decompose_stride *= perm_dim[i];}
 	delete[] perm_dim;
 	Linearization_NDJoin(data, decompose_stride, non_decompose_stride, rank, num_block, LARGE_RATIO);
+	for(int i = 0; i < rank; i++){permutation[i] += 1;}
 }
 
 template void NdJoin(int*, int *, int *, int, int, int, double);
