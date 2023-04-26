@@ -22,7 +22,7 @@ filename+='*.txt'
 # throughput='inplace_bench_throughput'
 # total_time='inplace_bench'
 # transpose_time='inplace_bench_wo_h2d2h'
-if $1 == 1
+if test "$1" -eq 1;
 then
 	for f in $filename
     do
