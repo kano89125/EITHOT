@@ -22,11 +22,29 @@ filename+='*.txt'
 # throughput='inplace_bench_throughput'
 # total_time='inplace_bench'
 # transpose_time='inplace_bench_wo_h2d2h'
-if $1 != 1
+if $1 == 1
 then
+	for f in $filename
+    do
+        if test -f "proper_input.txt"; then
+	    rm "proper_input.txt"
+	fi
+        echo $f
+        n=1
+        while read line; do 
+        echo "Case $n"
+
+        ./test_inplace $line
+        n=$((n+1))
+        echo ""
+        done < $f
+    done 
+else
     for f in $filename
     do
-        rm "proper_input.txt"
+    	if test -f "proper_input.txt"; then
+	    rm "proper_input.txt"
+	fi
         echo $f
         n=1
         while read line; do 
@@ -44,21 +62,7 @@ then
         n=$((n+1))
         echo ""
         done < "proper_input.txt"
-    done 
-else
-    for f in $filename
-    do
-        rm "proper_input.txt"
-        echo $f
-        n=1
-        while read line; do 
-        echo "Case $n"
-
-        ./test_inplace $line
-        n=$((n+1))
-        echo ""
-        done < $f
-    done 
+    done     
 fi
 # for f in $filename
 # do
