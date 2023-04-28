@@ -30,6 +30,12 @@ then
 	    rm "proper_input.txt"
 	fi
         echo $f
+        save_path=${f:0:-4}
+        if test -d $save_path; 
+	    then
+		rm -r -f $save_path
+	fi
+	mkdir $save_path
         n=1
         while read line; do 
         echo "Case $n"
@@ -38,14 +44,23 @@ then
         n=$((n+1))
         echo ""
         done < $f
+        mv 'inplace_bench.txt' $save_path/
+	mv 'inplace_bench_throughput.txt' $save_path/
+	mv 'Statistic.txt' $save_path/
     done 
 else
     for f in $filename
     do
     	if test -f "proper_input.txt"; then
 	    rm "proper_input.txt"
-	fi
+	    fi
         echo $f
+        save_path=${f:0:-4}
+        if test -d $save_path; 
+	    then
+		rm -r -f $save_path
+	fi
+	mkdir $save_path
         n=1
         while read line; do 
         echo "Case $n"
@@ -62,6 +77,10 @@ else
         n=$((n+1))
         echo ""
         done < "proper_input.txt"
+	python3 "Statistic.py"
+	mv 'inplace_bench.txt' $save_path/
+	mv 'inplace_bench_throughput.txt' $save_path/
+	mv 'Statistic.txt' $save_path/
     done     
 fi
 # for f in $filename

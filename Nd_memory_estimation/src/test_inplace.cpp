@@ -63,10 +63,18 @@ void transpose(TensorUtil<T>& tu, int NUM_TENSOR_BLOCK, double ALPHA, int TYPE_S
 		ALPHA = ceil(ALPHA * 100.0) / 100.0;
 		int single = 1;
 		//printf("Large dim bound = %d, nb = %d\n", Large_dim_low_bound, nb);
-		printf("\t\"");
-		for(size_t i = 0; i < tu.rank; ++i) { printf(" %zu", tu.dim_long[i]);}
-		for(size_t i = 0; i < tu.rank; ++i) { printf(" %zu", tu.permutation_long[i] + 1);}
-		printf(" %d %d %.2f\"\\\n", TYPE_SIZE, single, ALPHA);
+		printf("\t");
+		for(size_t i = 0; i < tu.rank; ++i) { printf("%zu ", tu.dim_long[i]);}
+		for(size_t i = 0; i < tu.rank; ++i) { printf("%zu ", tu.permutation_long[i] + 1);}	
+			
+		//printf("NUM sub-tensor should be %d\n", nb);
+		//printf(" %d\n, nb");
+		printf("%d %d %.2f\n", TYPE_SIZE, nb, ALPHA);
+		FILE *txtfp = fopen("proper_input.txt", "a+");
+		for(size_t i = 0; i < tu.rank; ++i) { fprintf(txtfp, "%zu ", tu.dim_long[i]);}
+		for(size_t i = 0; i < tu.rank; ++i) { fprintf(txtfp,"%zu ", tu.permutation_long[i] + 1);}	
+		fprintf(txtfp, "%d %d %.2f\n", TYPE_SIZE, nb, ALPHA);
+		fclose(txtfp);
 		return;
 	}
 	
