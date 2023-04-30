@@ -90,7 +90,7 @@ Then **make** again and copy **test_inplace** to Benchmark folder.
 
 ### Example
 
-In this section, we will use Experiment 2 as an example. After executing ./Bench.sh 2, the script will run through all the test case files under Experiment 2. Since Experiment 2 has only one test case file, it will run only one file.
+In this section, we will use Experiment 2 as an example. After executing **./Bench.sh 2**, the script will run through all the test case files under **./test_cases/exp2**. Since Experiment 2 has only one test case file, it will run only one file.
 
 For each test case, the script will first estimate the optimal values for the number of subtensors and alpha to achieve better performance. This step will also show the additional memory required in this case. After estimating the optimal values, the script will start the transposition process.
 
