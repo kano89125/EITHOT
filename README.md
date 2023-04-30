@@ -111,5 +111,3 @@ For each test case, the script will display its information, including the trans
 ![ScreenShot](./Example_png/exp2_14.png)
 ![ScreenShot](./Example_png/exp2_15.png)
 ![ScreenShot](./Example_png/exp2_16.png)
-![ScreenShot](./Example_png/exp2_17.png)
-![ScreenShot](./Example_png/exp2_18.png)
