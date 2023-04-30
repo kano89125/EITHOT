@@ -89,21 +89,27 @@ You can change the value of the variable as follows:
 Then **make** again and copy **test_inplace** to Benchmark folder. 
 
 ### Example
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_1.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_2.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_3.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_4.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_5.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_6.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_7.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_8.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_9.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_10.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_11.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_12.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_13.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_14.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_15.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_16.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_17.png)
-![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_18.png)
+
+In this section, we will use Experiment 2 as an example. After executing ./Bench.sh 2, the script will run through all the test case files under Experiment 2. Since Experiment 2 has only one test case file, it will run only one file.
+
+For each test case, the script will first estimate the optimal values for the number of subtensors and alpha to achieve better performance. This step will also show the additional memory required in this case. After estimating the optimal values, the script will start the transposition process.
+
+For each test case, the script will display its information, including the transpose permutation, the size of the tensor, number of subtensors, and alpha. It will then show the correctness and benchmark results. After finishing all the test cases in a file, the script will output the statistical results and move the benchmark results to the folder with the same name as the test case file. The result folder will be placed beside the test case file in the same directory.
+![ScreenShot](./Example_png/exp2_1.png)
+![ScreenShot](./Example_png/exp2_2.png)
+![ScreenShot](./Example_png/exp2_3.png)
+![ScreenShot](./Example_png/exp2_4.png)
+![ScreenShot](./Example_png/exp2_5.png)
+![ScreenShot](./Example_png/exp2_6.png)
+![ScreenShot](./Example_png/exp2_7.png)
+![ScreenShot](./Example_png/exp2_8.png)
+![ScreenShot](./Example_png/exp2_9.png)
+![ScreenShot](./Example_png/exp2_10.png)
+![ScreenShot](./Example_png/exp2_11.png)
+![ScreenShot](./Example_png/exp2_12.png)
+![ScreenShot](./Example_png/exp2_13.png)
+![ScreenShot](./Example_png/exp2_14.png)
+![ScreenShot](./Example_png/exp2_15.png)
+![ScreenShot](./Example_png/exp2_16.png)
+![ScreenShot](./Example_png/exp2_17.png)
+![ScreenShot](./Example_png/exp2_18.png)
