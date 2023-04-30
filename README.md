@@ -87,3 +87,23 @@ You can change the value of the variable as follows:
 - 2: post-order
 
 Then **make** again and copy **test_inplace** to Benchmark folder. 
+
+### Example
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_1.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_2.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_3.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_4.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_5.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_6.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_7.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_8.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_9.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_10.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_11.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_12.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_13.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_14.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_15.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_16.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_17.png)
+![image](https://github.com/kano89125/EITHOT/tree/main/Example_png/exp2_18.png)
